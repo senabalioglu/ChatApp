@@ -5,6 +5,7 @@ import FloatingButton from '../../components/FloatingButton';
 import ContentInputModal from '../../components/modal/ContentInputModal/ContentInputModal';
 import database from '@react-native-firebase/database';
 import HomeCard from '../../components/card/HomeCard';
+import SearchBar from '../../components/SearchBar';
 
 const Home = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -50,6 +51,7 @@ const Home = () => {
   const renderContent = ({item}) => <HomeCard data={item} />
   return (
     <SafeAreaView style={{flex: 1}}>
+      <SearchBar />
       <FlatList 
       data={contentList}
       renderItem={renderContent}
