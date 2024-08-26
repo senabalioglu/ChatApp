@@ -18,6 +18,7 @@ function Login({navigation}) {
         formValues.usermail,
         formValues.password,
       );
+      navigation.navigate('HomeScreen');
       console.log('basari');
     } catch (error) {
       console.log(error);
