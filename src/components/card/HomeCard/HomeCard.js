@@ -6,7 +6,7 @@ const HomeCard = ({data, onPress}) => {
     return(
         <TouchableOpacity onPress={onPress} style={styles.container} >
             <View style={{margin: 10}} >
-            <Text>{data.roomName}</Text>
+            <Text>{data.title}</Text>
             </View>
         </TouchableOpacity>
     )

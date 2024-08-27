@@ -4,6 +4,7 @@ import Input from "../../components/Input/Input";
 import styles from './SignUp.styles';
 import {Formik} from 'formik';
 import auth from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
 
 const initialFormValues = {
   usermail: '',
@@ -23,6 +24,17 @@ function SignUp({navigation}) {
         formValues.usermail,
         formValues.password,
       );
+      const user = auth().currentUser;
+
+      if (user) {
+        await database().ref(`users/${user.uid}`).set({
+          name: '',
+          surname: '',
+          age: '',
+          profile_url: '',
+          chatList: [],
+        });
+      }
       navigation.navigate('LoginScreen');
     } catch (error) {
       console.log(error);

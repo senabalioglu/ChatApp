@@ -6,15 +6,16 @@ import ContentInputModal from '../../components/modal/ContentInputModal/ContentI
 import database from '@react-native-firebase/database';
 import HomeCard from '../../components/card/HomeCard';
 import { getAuth } from '@react-native-firebase/auth';
+import auth from '@react-native-firebase/auth';
 //import SearchBar from '../../components/SearchBar';
 
 const Home = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [contentList, setContentList] = useState([]);
-  const [userList, setUserList] = useState([]);
+  //const [userList, setUserList] = useState([]);
 
   useEffect(() => {
-    const reference = database().ref('rooms/');
+    const reference = database().ref('chatRooms/');
     const onValueChange = reference.on('value', snapshot => {
       const contentData = snapshot.val();
       if (contentData) {
@@ -30,15 +31,26 @@ const Home = ({navigation}) => {
     return () => reference.off('value', onValueChange);
   }, []);
 
+
   const sendContent = content => {
+    const user = auth().currentUser;
+    console.log('user', user)
     const contentObject = {
-      roomName: content,
+      title: content,
+      theme: '',
+      url: '',
+      chatUsers: [user.uid],
     };
-    database()
-      .ref('rooms/')
-      .push(contentObject)
-      .then(() => console.log('Room added successfully'))
-      .catch(error => console.error('Failed to add room:', error));
+    const newRoomRef = database().ref('chatRooms/').push(contentObject);
+
+    const newRoomId = newRoomRef.key;
+    console.log(newRoomId);
+
+    if(user){
+        database().ref(`users/${user.uid}`).update({
+        chatList: [newRoomId],
+      });
+    }
   };
 
   const handleSendContent = content => {
@@ -52,7 +64,7 @@ const Home = ({navigation}) => {
 
   const renderContent = ({item}) => 
   <HomeCard 
-  onPress={() => navigation.navigate('ChatRoom', {roomId: item.id, chatRoomName: item.roomName})} 
+  onPress={() => navigation.navigate('ChatRoom', {roomId: item.id, chatRoomName: item.title})} 
   data={item} 
   />
   return (

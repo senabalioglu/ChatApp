@@ -11,7 +11,7 @@ import ChatRoom from './pages/ChatRoom/ChatRoom';
 
 const Stack = createNativeStackNavigator();
 
-const AuthStack = ({roomTitle}) => {
+const AuthStack = () => {
   return(
     <Stack.Navigator screenOptions={
     {headerShown: false}

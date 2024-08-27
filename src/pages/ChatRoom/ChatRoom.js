@@ -5,6 +5,7 @@ import ContentInputModal from "../../components/modal/ContentInputModal/ContentI
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import ChatRoomCard from "../../components/card/ChatRoomCard/ChatRoomCard";
+import parseContentData from "../../utils/parseContentData";
 
 const ChatRoom =({route, navigation}) => {
     
@@ -18,15 +19,12 @@ const ChatRoom =({route, navigation}) => {
       }, [navigation, chatRoomName]);
 
     useEffect(()=>{
-        const reference = database().ref(`${roomId}/messages/`);
+        const reference = database().ref(`chatHistory/${roomId}/`);
         const onValueChange = reference.on('value', snapshot => {
             const messageData = snapshot.val();
             if(messageData){
-                const formattedData = Object.keys(messageData).map(key => ({
-                    id: key,
-                    ...messageData[key],
-                }));
-                setMessageList(formattedData);
+                const parseData = parseContentData(messageData || {});
+                setMessageList(parseData);
             }
         });
         return () => reference.off('value', onValueChange);
@@ -38,12 +36,14 @@ const ChatRoom =({route, navigation}) => {
 
     const sendContent = (content) => {
         const userMail = auth().currentUser.email;
+        const user = auth().currentUser;
         const contentObject = {
             text: content,
             username: userMail.split('@')[0],
             date: new Date().toISOString(),
+            userId: user.uid,
         }
-        database().ref(`${roomId}/messages/`).push(contentObject);
+        database().ref(`chatHistory/${roomId}/`).push(contentObject);
     }
     
     const handleSendContent = (content) => {
