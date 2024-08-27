@@ -1,14 +1,14 @@
 import React from "react";
-import {View, Text} from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
 import styles from './HomeCard.styles';
 
-const HomeCard = ({data}) => {
+const HomeCard = ({data, onPress}) => {
     return(
-        <View style={styles.container} >
-            <View style={{margin: 10,}} >
+        <TouchableOpacity onPress={onPress} style={styles.container} >
+            <View style={{margin: 10}} >
             <Text>{data.roomName}</Text>
             </View>
-        </View>
+        </TouchableOpacity>
     )
 }
 

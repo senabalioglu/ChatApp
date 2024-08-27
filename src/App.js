@@ -7,10 +7,11 @@ import SignUp from "./pages/SignUp";
 import Home from "./pages/Home/Home";
 import auth from '@react-native-firebase/auth';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import ChatRoom from './pages/ChatRoom/ChatRoom';
 
 const Stack = createNativeStackNavigator();
 
-const AuthStack = () => {
+const AuthStack = ({roomTitle}) => {
   return(
     <Stack.Navigator screenOptions={
     {headerShown: false}
@@ -46,6 +47,7 @@ useEffect(() => {
             />
       }} name="HomeScreen" component={Home} />
       }
+      <Stack.Screen name="ChatRoom" component={ChatRoom} />
       </Stack.Navigator>
     </NavigationContainer>
   )

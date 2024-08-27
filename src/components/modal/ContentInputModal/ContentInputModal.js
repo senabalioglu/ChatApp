@@ -31,7 +31,7 @@ const ContentInputModal = ({onClose, visible, onSend}) => {
         </View>
         
       </View>
-      <Button onPress={handleSend}  style={{margin: 10}} title='aa' />
+      <Button onPress={handleSend}  style={{margin: 10}} title='Gönder' />
     </Modal>
   );
 };

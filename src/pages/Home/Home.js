@@ -5,11 +5,13 @@ import FloatingButton from '../../components/FloatingButton';
 import ContentInputModal from '../../components/modal/ContentInputModal/ContentInputModal';
 import database from '@react-native-firebase/database';
 import HomeCard from '../../components/card/HomeCard';
-import SearchBar from '../../components/SearchBar';
+import { getAuth } from '@react-native-firebase/auth';
+//import SearchBar from '../../components/SearchBar';
 
-const Home = () => {
+const Home = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [contentList, setContentList] = useState([]);
+  const [userList, setUserList] = useState([]);
 
   useEffect(() => {
     const reference = database().ref('rooms/');
@@ -48,10 +50,13 @@ const Home = () => {
     setModalVisible(!modalVisible);
   };
 
-  const renderContent = ({item}) => <HomeCard data={item} />
+  const renderContent = ({item}) => 
+  <HomeCard 
+  onPress={() => navigation.navigate('ChatRoom', {roomId: item.id, chatRoomName: item.roomName})} 
+  data={item} 
+  />
   return (
     <SafeAreaView style={{flex: 1}}>
-      <SearchBar />
       <FlatList 
       data={contentList}
       renderItem={renderContent}

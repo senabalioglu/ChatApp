@@ -11,7 +11,7 @@ const initialFormValues = {
   repassword: '',
 }
 
-function Login({navigation}) {
+function SignUp({navigation}) {
 
   async function handleFormSubmit (formValues) {
     try {
@@ -68,4 +68,4 @@ function Login({navigation}) {
     );
   }
   
-export default Login;
+export default SignUp;

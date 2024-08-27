@@ -48,9 +48,10 @@ function Login({navigation}) {
             values={values.password}
             isSecure
             />
-
+          <View style={styles.button_container} >
           <Button onPress={handleSubmit} title="Giriş Yap" />
           <Button onPress={handleSignUp} title="Kayıt Ol" />
+          </View>
         </View>
           </>
         )}
