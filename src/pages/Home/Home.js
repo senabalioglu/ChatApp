@@ -1,40 +1,69 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, SafeAreaView, FlatList} from 'react-native';
-//import HomeCard from '../../components/card/HomeCard/HomeCard';
 import FloatingButton from '../../components/FloatingButton';
 import ContentInputModal from '../../components/modal/ContentInputModal/ContentInputModal';
-import database from '@react-native-firebase/database';
 import HomeCard from '../../components/card/HomeCard';
-import { getAuth } from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
-//import SearchBar from '../../components/SearchBar';
+import UserCard from '../../components/card/UserCard/UserCard';
 
 const Home = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [contentList, setContentList] = useState([]);
-  //const [userList, setUserList] = useState([]);
+  const [userChatList, setUserChatList] = useState([]);
+  const [usersList, setUsersList] = useState([]);
+
+  useEffect(() => {
+    const reference = database().ref('users/');
+    const onValueChange = reference.on('value', snapshot => {
+      const userData = snapshot.val();
+      if (userData) {
+        const filteredData = Object.keys(userData).map(key => ({
+          id: key,
+          ...userData[key],
+        }));
+        setUsersList(filteredData);
+      } else {
+        setUsersList([]);
+      }
+    });
+    return () => reference.off('value', onValueChange);
+  }, []);
+
+  useEffect(() => {
+    const user = auth().currentUser;
+
+    if (user) {
+      const userChatListRef = database().ref(`users/${user.uid}/chatList`);
+      userChatListRef.on('value', snapshot => {
+        const chatList = snapshot.val() || [];
+        setUserChatList(chatList);
+      });
+    }
+  }, []);
 
   useEffect(() => {
     const reference = database().ref('chatRooms/');
     const onValueChange = reference.on('value', snapshot => {
       const contentData = snapshot.val();
       if (contentData) {
-        const formattedData = Object.keys(contentData).map(key => ({
-          id: key,
-          ...contentData[key],
-        }));
-        setContentList(formattedData);
+        const filteredData = Object.keys(contentData)
+          .filter(key => userChatList.includes(key))
+          .map(key => ({
+            id: key,
+            ...contentData[key],
+          }));
+        setContentList(filteredData);
       } else {
         setContentList([]);
       }
     });
     return () => reference.off('value', onValueChange);
-  }, []);
-
+  }, [userChatList]);
 
   const sendContent = content => {
     const user = auth().currentUser;
-    console.log('user', user)
+    console.log('user', user);
     const contentObject = {
       title: content,
       theme: '',
@@ -46,9 +75,14 @@ const Home = ({navigation}) => {
     const newRoomId = newRoomRef.key;
     console.log(newRoomId);
 
-    if(user){
-        database().ref(`users/${user.uid}`).update({
-        chatList: [newRoomId],
+    if (user) {
+      const userChatListRef = database().ref(`users/${user.uid}/chatList`);
+
+      userChatListRef.once('value', snapshot => {
+        const currentChatList = snapshot.val() || [];
+        const updatedChatList = [...currentChatList, newRoomId];
+
+        userChatListRef.set(updatedChatList);
       });
     }
   };
@@ -62,16 +96,43 @@ const Home = ({navigation}) => {
     setModalVisible(!modalVisible);
   };
 
-  const renderContent = ({item}) => 
-  <HomeCard 
-  onPress={() => navigation.navigate('ChatRoom', {roomId: item.id, chatRoomName: item.title})} 
-  data={item} 
-  />
+  const renderContent = ({item}) => (
+    <HomeCard
+      onPress={() =>
+        navigation.navigate('ChatRoom', {
+          roomId: item.id,
+          chatRoomName: item.title,
+        })
+      }
+      data={item}
+    />
+  );
+
+  const renderUser = ({item}) => (
+    <UserCard
+    onPress={() =>
+      navigation.navigate('ChatRoom', {
+        roomId: item.id,
+        chatRoomName: item.title,
+      })
+    }
+      data={item}
+    />
+  );
+
   return (
     <SafeAreaView style={{flex: 1}}>
-      <FlatList 
-      data={contentList}
-      renderItem={renderContent}
+      <FlatList
+        data={contentList}
+        renderItem={renderContent}
+        keyExtractor={item => item.id}
+        ListHeaderComponent={() => (
+          <FlatList
+            data={usersList}
+            renderItem={renderUser}
+            keyExtractor={item => item.id}
+          />
+        )}
       />
       <FloatingButton name="plus" onPress={toggleVisible} />
       <ContentInputModal
