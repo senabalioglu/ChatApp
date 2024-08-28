@@ -63,7 +63,6 @@ const Home = ({navigation}) => {
 
   const sendContent = content => {
     const user = auth().currentUser;
-    console.log('user', user);
     const contentObject = {
       title: content,
       theme: '',
@@ -73,8 +72,6 @@ const Home = ({navigation}) => {
     const newRoomRef = database().ref('chatRooms/').push(contentObject);
 
     const newRoomId = newRoomRef.key;
-    console.log(newRoomId);
-
     if (user) {
       const userChatListRef = database().ref(`users/${user.uid}/chatList`);
 
@@ -110,6 +107,7 @@ const Home = ({navigation}) => {
 
   const renderUser = ({item}) => (
     <UserCard
+    showCheckbox={false}
     onPress={() =>
       navigation.navigate('ChatRoom', {
         roomId: item.id,

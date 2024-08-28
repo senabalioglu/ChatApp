@@ -29,7 +29,6 @@ const ContentInputModal = ({onClose, visible, onSend}) => {
           multiline
           />
         </View>
-        
       </View>
       <Button onPress={handleSend}  style={{margin: 10}} title='Gönder' />
     </Modal>
