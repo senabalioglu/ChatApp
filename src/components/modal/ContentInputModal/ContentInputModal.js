@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import {View, TextInput, Button} from 'react-native';
+import {View, TextInput} from 'react-native';
 import Modal from 'react-native-modal';
 import styles from './ContentInputModal.styles';
+import Button from '../../Button/Button';
 
 const ContentInputModal = ({onClose, visible, onSend}) => {
   const [text, setText] = useState();
@@ -30,7 +31,7 @@ const ContentInputModal = ({onClose, visible, onSend}) => {
           />
         </View>
       </View>
-      <Button onPress={handleSend}  style={{margin: 10}} title='Gönder' />
+      <Button onPress={handleSend} title='Gönder' />
     </Modal>
   );
 };

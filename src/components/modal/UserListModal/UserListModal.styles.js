@@ -10,8 +10,8 @@ export default StyleSheet.create({
 
     container: {
         padding: 10,
-        borderTopLeftRadius: 10,
-        borderTopRightRadius: 10,
+        borderRadius: 10,
+        margin: 10,
         height: deviceSize.height /4,
         backgroundColor: 'white',
         

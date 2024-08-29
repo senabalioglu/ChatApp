@@ -1,9 +1,10 @@
 import React from "react";
-import {View, Text, SafeAreaView, Button} from "react-native";
+import {View, Text, SafeAreaView} from "react-native";
 import Input from "../../components/Input/Input";
 import styles from './Login.styles';
 import {Formik} from 'formik';
 import auth from '@react-native-firebase/auth';
+import Button from "../../components/Button";
 
 const initialFormValues = {
   usermail: '',
@@ -30,7 +31,7 @@ function Login({navigation}) {
   }
 
     return (
-      <SafeAreaView style={{flex: 1}} >
+      <SafeAreaView style={{flex: 1, backgroundColor: '#ffffff'}} >
         <Formik initialValues={initialFormValues} onSubmit={handleFormSubmit}>{({ values, handleChange, handleSubmit }) =>  (
           <> 
           <View style={styles.text_container} > 
@@ -49,8 +50,8 @@ function Login({navigation}) {
             isSecure
             />
           <View style={styles.button_container} >
-          <Button onPress={handleSubmit} title="Giriş Yap" />
-          <Button onPress={handleSignUp} title="Kayıt Ol" />
+          <Button theme="primary" onPress={handleSubmit} title="Giriş Yap" />
+          <Button theme="secondary" onPress={handleSignUp} title="Kayıt Ol" />
           </View>
         </View>
           </>

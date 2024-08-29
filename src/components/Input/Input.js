@@ -7,6 +7,7 @@ const Input=({placeholder, onType, values}) => {
         <View style={styles.container} >
             <TextInput 
             placeholder={placeholder}
+            placeholderTextColor="#b7bdc5"
             onChangeText={onType}
             value={values}
             />

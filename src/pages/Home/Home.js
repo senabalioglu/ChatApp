@@ -5,14 +5,18 @@ import ContentInputModal from '../../components/modal/ContentInputModal/ContentI
 import HomeCard from '../../components/card/HomeCard';
 import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
-import UserCard from '../../components/card/UserCard/UserCard';
+import styles from './Home.styles';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import SearchBar from '../../components/SearchBar/SearchBar';
+//import UserCard from '../../components/card/UserCard/UserCard';
 
 const Home = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [contentList, setContentList] = useState([]);
   const [userChatList, setUserChatList] = useState([]);
-  const [usersList, setUsersList] = useState([]);
+  //const [usersList, setUsersList] = useState([]);
 
+  /*
   useEffect(() => {
     const reference = database().ref('users/');
     const onValueChange = reference.on('value', snapshot => {
@@ -29,6 +33,7 @@ const Home = ({navigation}) => {
     });
     return () => reference.off('value', onValueChange);
   }, []);
+  */
 
   useEffect(() => {
     const user = auth().currentUser;
@@ -104,7 +109,7 @@ const Home = ({navigation}) => {
       data={item}
     />
   );
-
+  /*
   const renderUser = ({item}) => (
     <UserCard
     showCheckbox={false}
@@ -117,13 +122,20 @@ const Home = ({navigation}) => {
       data={item}
     />
   );
-
+  */
   return (
     <SafeAreaView style={{flex: 1}}>
+      <View style={styles.container} >
+      <SearchBar />
+      <View style={styles.header_container} >
+      <Text style={styles.header} >Odalar</Text>
+      <Icon color={'black'} size={30} onPress={toggleVisible} name='plus' />
+      </View>
       <FlatList
         data={contentList}
         renderItem={renderContent}
         keyExtractor={item => item.id}
+        /*
         ListHeaderComponent={() => (
           <FlatList
             data={usersList}
@@ -131,8 +143,9 @@ const Home = ({navigation}) => {
             keyExtractor={item => item.id}
           />
         )}
+        */
       />
-      <FloatingButton name="plus" onPress={toggleVisible} />
+      </View>
       <ContentInputModal
         onClose={toggleVisible}
         visible={modalVisible}

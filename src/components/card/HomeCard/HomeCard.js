@@ -4,18 +4,17 @@ import Button from "../../Button/Button";
 import styles from './HomeCard.styles';
 import UserListModal from "../../modal/UserListModal/UserListModal";
 
-const HomeCard = ({data}) => {
-    console.log(data);
+const HomeCard = ({data, onPress}) => {
     const [modalVisible, setModalVisible] = useState(false);
 
     const listUsers = () => {
         setModalVisible(!modalVisible);
     }
     return(
-        <TouchableOpacity style={styles.container} >
+        <TouchableOpacity onPress={onPress} style={styles.contactItem} >
             <View style={styles.inner_container} >
-            <Text>{data.title}</Text>
-            <Button onPress={listUsers} />
+            <Text style={styles.contactName} >{data.title}</Text>
+            <Button title="Kişi Ekle" onPress={listUsers} />
             <UserListModal
             visible={modalVisible}
             onClose={listUsers}
