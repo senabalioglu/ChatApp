@@ -11,6 +11,7 @@ export default StyleSheet.create({
         fontWeight: 'bold',
         color: '#333', // Başlık rengi
         marginBottom: 20,
+        fontFamily: 'Mulish-Regular',
       },
       header_container: {
         flexDirection: 'row',
