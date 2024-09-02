@@ -48,16 +48,19 @@ const Home = ({navigation}) => {
   }, []);
 
   useEffect(() => {
-    const reference = database().ref('chatRooms/');
+    const reference = database().ref('chatRooms');
     const onValueChange = reference.on('value', snapshot => {
       const contentData = snapshot.val();
+      
       if (contentData) {
+        
         const filteredData = Object.keys(contentData)
           .filter(key => userChatList.includes(key))
           .map(key => ({
             id: key,
             ...contentData[key],
           }));
+          
         setContentList(filteredData);
       } else {
         setContentList([]);
@@ -67,6 +70,7 @@ const Home = ({navigation}) => {
   }, [userChatList]);
 
   const sendContent = content => {
+
     const user = auth().currentUser;
     const contentObject = {
       title: content,
@@ -74,12 +78,11 @@ const Home = ({navigation}) => {
       url: '',
       chatUsers: [user.uid],
     };
-    const newRoomRef = database().ref('chatRooms/').push(contentObject);
-
+    
+    const newRoomRef = database().ref('chatRooms/').push(contentObject)
     const newRoomId = newRoomRef.key;
     if (user) {
       const userChatListRef = database().ref(`users/${user.uid}/chatList`);
-
       userChatListRef.once('value', snapshot => {
         const currentChatList = snapshot.val() || [];
         const updatedChatList = [...currentChatList, newRoomId];
@@ -124,7 +127,7 @@ const Home = ({navigation}) => {
   );
   */
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{ backgroundColor: '#ffffff', flex: 1}}>
       <View style={styles.container} >
       <SearchBar />
       <View style={styles.header_container} >

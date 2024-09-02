@@ -33,7 +33,8 @@ useEffect(() => {
 
   return(
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator screenOptions={
+    {headerShown: false}} >
       {
       !userSession?
       <Stack.Screen options={{headerShown: false}} name="AuthScreen" component={AuthStack}/>

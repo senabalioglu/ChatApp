@@ -9,18 +9,19 @@ export default StyleSheet.create({
     },
     */
     contactItem: {
-        backgroundColor: '#FFFFFF', // Liste öğesi arka plan rengi
-        padding: 16,
-        marginBottom: 10,
-        borderRadius: 8,
-        shadowColor: '#000000', // Gölge rengi
-        shadowOpacity: 0.1, // Gölge opaklığı
-        shadowRadius: 8, // Gölge yarıçapı
-        elevation: 2, // Android için gölge
+        padding: 10,
+        borderBottomWidth: 1,
+        borderColor: '#ededed'
+        
       },
     
       contactName: {
-        fontSize: 18, // İsim font boyutu
+        
+        marginBottom: 5,
+        color: '#0F1828',
+        fontWeight: '600',
+        lineHeight: 24,
+        fontSize: 14, // İsim font boyutu
         color: '#333', // İsim rengi
       },
 
@@ -28,6 +29,6 @@ export default StyleSheet.create({
         flexDirection: 'row',
         margin: 10,
         alignItems: 'center',
-        justifyContent: 'space-between',
+        //justifyContent: 'space-between',
     }
 })
